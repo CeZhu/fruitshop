@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.ItemCategoryMapper">
+    <sql id="itemCategory_field">
+        id, name, pid, isDelete
+    </sql>
+    <sql id="itemCategory_insert">
+        #{id}, #{name}, #{pid}, #{isDelete}
+    </sql>
+    <select id="findBySqlRerturnEntity" resultType="itemCategory">
+        ${sql}
+    </select>
+    <insert id="insert">
+        insert into item_category(
+        <include refid="itemCategory_field"/>
+        ) values (
+        <include refid="itemCategory_insert"/>
+        )
+    </insert>
+    <sql id="itemCategory_set">
+        name=#{name},pid=#{pid},isDelete=#{isDelete}
+    </sql>
+    <select id="load" resultType="itemCategory">
+        select
+        <include refid="itemCategory_field"/>
+        from item_category
+        where id=#{id}
+    </select>
+    <update id="update">
+        update item_category
+        set <include refid="itemCategory_set"/>
+        where id=#{id}
+    </update>
+    <update id="updateBysql">
+        ${sql}
+    </update>
+    <select id="listBySqlReturnEntity" resultType="itemCategory">
+        ${sql}
+    </select>
+</mapper>

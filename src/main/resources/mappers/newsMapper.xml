@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.NewsMapper">
+    <sql id="News_field">
+        id, name, content, addTime
+    </sql>
+    <sql id="News_insert">
+        #{id}, #{name}, #{content}, #{addTime}
+    </sql>
+    <sql id="News_set">
+        name = #{name}, content = #{content}, addTime = #{addTime}
+    </sql>
+    <select id="findBySqlRerturnEntity" resultType="news">
+        ${sql}
+    </select>
+    <insert id="insert">
+        insert into news(
+        <include refid="News_field"/>
+        ) values(
+        <include refid="News_insert"/>
+        )
+    </insert>
+    <delete id="deleteById">
+        delete
+        from news
+        where id = #{id}
+    </delete>
+    <select id="load" resultType="news">
+        select
+        <include refid="News_field"/>
+        from news where id=#{id}
+    </select>
+    <update id="update">
+        update news set <include refid="News_set"/> where id=#{id}
+    </update>
+</mapper>

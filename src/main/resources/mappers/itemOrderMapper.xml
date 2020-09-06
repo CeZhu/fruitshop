@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.ItemOrderMapper">
+    <resultMap id="ItemOrderResultMap" type="itemOrder">
+        <id property="id" column="id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="code" column="code"/>
+        <result property="addTime" column="addTime"/>
+        <result property="total" column="total"/>
+        <result property="isDelete" column="isDelete"/>
+        <result property="status" column="status"/>
+        <association property="user" column="user_id" select="com.thirdshop.mapper.UserMapper.load"/>
+        <collection property="details" column="id" ofType="com.thirdshop.po.OrderDetail"
+                    select="com.thirdshop.mapper.OrderDetailMapper.listByOrderId"/>
+    </resultMap>
+    <sql id="ItemOrder_field">
+        id, item_id, user_id, code, addTime, total, isDelete, status
+    </sql>
+    <sql id="ItemOrder_insert">
+        #{id}, #{itemId}, #{userId}, #{code}, #{addTime}, #{total}, #{isDelete}, #{status}
+    </sql>
+    <sql id="ItemOrder_set">
+        item_id = #{itemId}, user_id = #{userId}, code = #{code}, addTime = #{addTime}, total = #{total}, isDelete = #{isDelete}, status = #{status}
+    </sql>
+
+    <select id="findBySql" resultType="itemOrder">
+        ${sql}
+    </select>
+    <select id="findBySqlRerturnEntity" resultMap="ItemOrderResultMap">
+        ${sql}
+    </select>
+    <select id="listBySqlReturnEntity" resultMap="ItemOrderResultMap">
+        ${sql}
+    </select>
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        insert into item_order(
+        <include refid="ItemOrder_field"/>
+        )values (
+        <include refid="ItemOrder_insert"/>
+        )
+    </insert>
+    <select id="load" resultMap="ItemOrderResultMap">
+        select * from item_order where id=#{id}
+    </select>
+    <update id="update">
+        update item_order set <include refid="ItemOrder_set"/> where id=#{id}
+    </update>
+</mapper>

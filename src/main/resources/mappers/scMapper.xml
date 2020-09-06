@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.ScMapper">
+    <sql id="Sc_field">
+        id, item_id, user_id
+    </sql>
+    <sql id="Sc_insert">
+        #{id}, #{itemId}, #{userId}
+    </sql>
+    <resultMap id="ScResultMap" type="sc">
+        <id property="id" column="id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="userId" column="user_id"/>
+        <association property="item" column="item_id" select="com.thirdshop.mapper.ItemMapper.load"/>
+    </resultMap>
+    <insert id="insert">
+        insert into sc(
+        <include refid="Sc_field"/>
+        )values (
+        <include refid="Sc_insert"/>
+        )
+    </insert>
+    <select id="findBySqlRerturnEntity" resultMap="ScResultMap">
+        ${sql}
+    </select>
+    <delete id="deleteById">
+        delete from sc where id=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.CommentMapper">
+    <sql id="Comment_field">
+        id, user_id, item_id, content, addTime
+    </sql>
+    <sql id="Comment_insert">
+        #{id},#{userId}, #{itemId}, #{content}, #{addTime}
+    </sql>
+    <resultMap id="CommentResultMap" type="comment">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="itemId" column="item_id"/>
+        <result property="content" column="content"/>
+        <result property="addTime" column="addTime"/>
+        <association property="user" column="user_id" select="com.thirdshop.mapper.UserMapper.load"/>
+    </resultMap>
+    <select id="listByItemId" resultMap="CommentResultMap">
+        select <include refid="Comment_field"/>
+        from comment
+        where item_id = #{id}
+        order by id desc
+    </select>
+    <insert id="insert">
+        insert into comment(
+        <include refid="Comment_field"/>
+        )values (
+        <include refid="Comment_insert"/>
+        )
+    </insert>
+</mapper>

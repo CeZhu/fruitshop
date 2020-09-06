@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.thirdshop.mapper.UserMapper">
+    <sql id="User_field">
+        id, userName, passWord, phone, realName, sex, address, email
+    </sql>
+    <sql id="User_insert">
+        #{id}, #{userName}, #{passWord}, #{phone}, #{realName}, #{sex}, #{address}, #{email}
+    </sql>
+    <sql id="User_set">
+        <if test="phone!=null">phone = #{phone},</if>
+        <if test="realName!=null">realName = #{realName},</if>
+        <if test="sex!=null">sex = #{sex},</if>
+        <if test="address!=null">address = #{address},</if>
+        <if test="email!=null">email = #{email},</if>
+        <if test="passWord!=null">passWord=#{passWord}</if>
+    </sql>
+    <select id="findBySqlRerturnEntity" resultType="user">
+        ${sql}
+    </select>
+    <select id="load" resultType="user">
+        select
+        <include refid="User_field"/>
+        from user where id=#{id}
+    </select>
+    <insert id="insert">
+        insert into user(
+        <include refid="User_field"/>
+        )values (
+        <include refid="User_insert"/>
+        )
+    </insert>
+    <select id="getByEntity" resultType="user">
+        select *
+        from user
+        where userName = #{userName}
+          and passWord = #{passWord}
+    </select>
+    <update id="update">
+        update user
+        <set>
+            <include refid="User_set"/>
+        </set>
+        where id=#{id}
+    </update>
+</mapper>
